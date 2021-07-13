@@ -21,12 +21,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
 
     private final UserService userService;
     private TokenAuthenticationManager tokenAuthenticationManager;
-    @Value("${app.client.service.schema}")
-    private String clientServiceSchema;
-    @Value("${app.client.service.address}")
-    private String clientServiceAddress;
-    @Value("${app.client.service.port}")
-    private String clientServicePort;
 
     @Autowired
     public SecurityConfig(UserService userService) {
@@ -54,7 +48,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins(clientServiceSchema + "://" + clientServiceAddress + ":" + clientServicePort, clientServiceSchema + "://localhost:" + clientServicePort)
+                .allowedOrigins("*")
                 .allowedMethods("*");
     }
 

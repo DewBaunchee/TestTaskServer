@@ -3,10 +3,11 @@ package by.vorivoda.matvey.app.controller;
 import by.vorivoda.matvey.app.model.entity.sensor.Sensor;
 import by.vorivoda.matvey.app.model.service.SensorService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping(path = "/sensors")
@@ -20,22 +21,19 @@ public class ServiceController {
     }
 
     @GetMapping
-    public List<Sensor> getSensors(@RequestParam(required = false) String searchCondition,
-                                   @RequestParam(required = false) Integer pageIndex,
-                                   @RequestParam(required = false) Integer amountOnPage) {
+    public Map<String, Object> getSensors(@RequestParam(required = false) String searchCondition,
+                                          @RequestParam(required = false) Integer pageIndex,
+                                          @RequestParam(required = false) Integer amountOnPage) {
 
         searchCondition = searchCondition == null ? "" : searchCondition;
-        if (pageIndex == null || amountOnPage == null) return sensorService.getAll();
 
         List<Sensor> sensors = sensorService.getAll(searchCondition);
-        return sensors.subList(pageIndex * amountOnPage, Math.min((pageIndex + 1) * amountOnPage, sensors.size()));
-    }
+        int totalAmount = sensors.size();
+        if (pageIndex != null && amountOnPage != null) {
+            sensors = sensors.subList(pageIndex * amountOnPage, Math.min((pageIndex + 1) * amountOnPage, sensors.size()));
+        }
 
-    @GetMapping(params = {"can-modify"})
-    public Boolean canChange() {
-        return SecurityContextHolder.getContext().getAuthentication()
-                .getAuthorities().stream()
-                .anyMatch(value -> value.getAuthority().equals("ROLE_ADMINISTRATOR"));
+        return Map.of("totalAmount", totalAmount, "sensors",  sensors);
     }
 
     @GetMapping(path = "/count")

@@ -32,6 +32,13 @@ public class LoginController {
         authentication = new String(Base64.getDecoder().decode(authentication.substring("Basic".length()).trim()));
         String username = authentication.substring(0, authentication.indexOf(":"));
         String password = authentication.substring(authentication.indexOf(":") + 1);
-        return "{ \"token\": \"" + tokenService.generateToken(username, password) + "\" }";
+        return "{ \"token\": \"" + tokenService.generateToken(username, password) + "\"," +
+                "\"canModify\": " + canModify(username) + " }";
+    }
+
+    public Boolean canModify(String username) {
+        return tokenService.getUserService().loadUserByUsername(username)
+                .getAuthorities().stream()
+                .anyMatch(value -> value.getAuthority().equals("ROLE_ADMINISTRATOR"));
     }
 }

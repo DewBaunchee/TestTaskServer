@@ -38,7 +38,7 @@ public class TokenAuthenticationFilter extends AbstractAuthenticationProcessingF
         if (token == null) {
             token = request.getParameter("token");
         } else {
-            if (token.indexOf("Bearer") > 0) {
+            if (!token.contains("Bearer")) {
                 token = null;
             } else {
                 token = token.substring("Bearer".length()).trim();

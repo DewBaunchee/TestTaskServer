@@ -38,7 +38,6 @@ public class TokenService {
     }
 
     public String generateToken(String username, String password) {
-
         if (username == null || password == null)
             return null;
 
@@ -65,7 +64,7 @@ public class TokenService {
         }
     }
 
-    public String getSecret() {
-        return secret;
+    public UserDetailsService getUserService() {
+        return userService;
     }
 }
