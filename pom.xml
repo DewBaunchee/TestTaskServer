@@ -15,9 +15,11 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>Monitor Sensors Service</name>
     <description>Test task of LABINVENT</description>
+    <packaging>war</packaging>
 
     <properties>
         <java.version>11</java.version>
+        <start-class>by.vorivoda.matvey.app.MonitorSensorsApplication</start-class>
     </properties>
 
     <dependencies>
@@ -77,9 +79,17 @@
             <artifactId>tomcat-dbcp</artifactId>
             <version>9.0.10</version>
         </dependency>
+
+        <!-- Tomcat -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
     <build>
+        <finalName>monitor-sensors</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
